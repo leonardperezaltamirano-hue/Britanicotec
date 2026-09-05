@@ -3,408 +3,803 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Académico - Centralizador de Calificaciones</title>
+    <title>Reporte Centralizador de Calificaciones 2026 - Colegio Británico</title>
     <style>
         :root {
-            --bg-primary: #f8fafc;
+            --primary: #1e3a8a;
+            --primary-dark: #1e293b;
+            --secondary: #0284c7;
+            --accent: #d97706;
+            --bg-body: #f8fafc;
             --card-bg: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --accent-blue: #2563eb;
-            --success-bg: #dcfce7;
-            --success-text: #15803d;
-            --warning-bg: #fef3c7;
-            --warning-text: #b45309;
-            --danger-bg: #fee2e2;
-            --danger-text: #b91c1c;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
             --border-color: #e2e8f0;
+            --danger-bg: #fef2f2;
+            --danger-text: #991b1b;
+            --danger-border: #fecaca;
+            --success-bg: #f0fdf4;
+            --success-text: #166534;
+            --success-border: #bbf7d0;
+            --warning-bg: #fffbeb;
+            --warning-text: #92400e;
+            --warning-border: #fef3c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 2rem;
+            background-color: var(--bg-body);
+            color: var(--text-main);
             line-height: 1.5;
+            padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
+        /* Header */
         header {
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 1rem;
-        }
-
-        h1 {
-            font-size: 1.875rem;
-            margin: 0 0 0.5rem 0;
-            color: #0f172a;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .metric-card {
-            background: var(--card-bg);
-            padding: 1.25rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
-        }
-
-        .metric-card h3 {
-            margin: 0 0 0.5rem 0;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-        }
-
-        .metric-card .number {
-            font-size: 1.75rem;
-            font-weight: 700;
-        }
-
-        .controls {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            color: white;
+            padding: 24px 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.25);
+            margin-bottom: 24px;
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
+            gap: 16px;
         }
 
-        select, input {
-            padding: 0.6rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+        .header-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-title p {
+            color: #93c5fd;
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        .header-meta {
+            text-align: right;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+        }
+
+        .header-meta span {
+            display: block;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .header-meta strong {
+            font-size: 1rem;
+            color: #ffffff;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
             background: var(--card-bg);
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            outline: none;
-        }
-
-        select:focus, input:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-        }
-
-        .course-section {
-            background: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 20px;
+            border-radius: 14px;
             border: 1px solid var(--border-color);
-            margin-bottom: 2rem;
-            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .course-header {
-            background: #f1f5f9;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+        }
+
+        .kpi-card .label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .kpi-card .value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .kpi-card .subtext {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .kpi-card.danger .value { color: #dc2626; }
+        .kpi-card.success .value { color: #16a34a; }
+        .kpi-card.warning .value { color: #d97706; }
+
+        /* Navigation Controls */
+        .controls-card {
+            background: var(--card-bg);
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
             display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
             justify-content: space-between;
             align-items: center;
         }
 
-        .course-header h2 {
-            margin: 0;
-            font-size: 1.25rem;
-            color: #0f172a;
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            fill: var(--text-muted);
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-filter:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-filter.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Course Selector Tabs */
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            scrollbar-width: thin;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);
+        }
+
+        /* Content Sections */
+        .section-block {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+        }
+
+        .section-block.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section-header h2 {
+            font-size: 1.35rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        /* Stats Badge Summary inside Course Header */
+        .course-stats-summary {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .stat-badge span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
         }
 
-        th, td {
-            padding: 0.75rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+        thead {
+            background-color: #f8fafc;
+            border-bottom: 2px solid var(--border-color);
         }
 
         th {
-            background-color: #fafafa;
-            font-weight: 600;
-            color: var(--text-secondary);
+            padding: 12px 16px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
         }
 
-        tr:last-child td {
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: #334155;
+        }
+
+        tbody tr:last-child td {
             border-bottom: none;
         }
 
+        tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Data formatting styles */
+        .grade-number {
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .grade-low {
+            color: #dc2626;
+            font-weight: 700;
+            background-color: #fef2f2;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .grade-high {
+            color: #15803d;
+            font-weight: 700;
+            background-color: #f0fdf4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Status Pills */
         .badge {
             display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
-        .badge-destacado {
+        .badge-aprobado {
             background-color: var(--success-bg);
             color: var(--success-text);
-        }
-
-        .badge-regular {
-            background-color: var(--warning-bg);
-            color: var(--warning-text);
+            border: 1px solid var(--success-border);
         }
 
         .badge-reprobado {
             background-color: var(--danger-bg);
             color: var(--danger-text);
+            border: 1px solid var(--danger-border);
         }
 
-        .badge-top3 {
-            background-color: #dbeafe;
-            color: #1e40af;
-            border: 1px solid #bfdbfe;
-            margin-left: 0.5rem;
+        .badge-alerta {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border: 1px solid var(--warning-border);
+        }
+
+        /* Overview Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .comp-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .comp-card h3 {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .comp-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 0.88rem;
+        }
+
+        .comp-row .student-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .comp-row .student-score {
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header { text-align: center; justify-content: center; }
+            .header-meta { text-align: center; }
+            .section-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- Header -->
     <header>
-        <h1>Centralizador de Calificaciones — Gestión 2026</h1>
-        <div class="subtitle">Asignatura: TECNOLOGÍA | Profesor: PEREZ ALTAMIRANO LEONAR ALEX</div>
+        <div class="header-title">
+            <h1>Colegio Británico — Reporte Académico Centralizador</h1>
+            <p>Gestión 2026 | Asignatura: Tecnología | Profesor: Perez Altamirano Leonar Alex</p>
+        </div>
+        <div class="header-meta">
+            <span>Consolidado de 9 Cursos</span>
+            <strong>191 Estudiantes Evaluados</strong>
+        </div>
     </header>
 
-    <div class="summary-cards">
-        <div class="metric-card">
-            <h3>Total Estudiantes</h3>
-            <div class="number" id="stat-total">62</div>
+    <!-- Global Executive Dashboard KPIs -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="label">Total Estudiantes</div>
+            <div class="value" id="kpi-total">191</div>
+            <div class="subtext">Distribuidos en 9 cursos de Primaria</div>
         </div>
-        <div class="metric-card">
-            <h3>Estudiantes Destacados (&gt;90 pts)</h3>
-            <div class="number" style="color: var(--success-text);" id="stat-destacados">35</div>
+        <div class="kpi-card success">
+            <div class="label">Estudiantes Destacados (&ge; 90)</div>
+            <div class="value" id="kpi-destacados">73</div>
+            <div class="subtext">38.2% con rendimiento sobresaliente</div>
         </div>
-        <div class="metric-card">
-            <h3>En Riesgo / Reprobados (&lt;51 pts)</h3>
-            <div class="number" style="color: var(--danger-text);" id="stat-reprobados">1</div>
+        <div class="kpi-card danger">
+            <div class="label">En Riesgo / Reprobados (&lt; 51)</div>
+            <div class="value" id="kpi-reprobados">3</div>
+            <div class="subtext">Notas &lt; 51 en trimestre o promedio</div>
+        </div>
+        <div class="kpi-card warning">
+            <div class="label">Promedio General Institucional</div>
+            <div class="value" id="kpi-promedio">83.9</div>
+            <div class="subtext">Rendimiento académico global positivo</div>
         </div>
     </div>
 
-    <div class="controls">
-        <select id="courseFilter" onchange="renderData()">
-            <option value="ALL">Todos los Cursos</option>
-            <option value="Primary 1 Altruism">Primary 1 Altruism</option>
-            <option value="Primary 1 Bravery">Primary 1 Bravery</option>
-            <option value="Primary 1 Consistency">Primary 1 Consistency</option>
-        </select>
-
-        <select id="categoryFilter" onchange="renderData()">
-            <option value="ALL">Todas las Categorías</option>
-            <option value="TOP3">Mejores Puntajes (Top 3 por Curso)</option>
-            <option value="DESTACADO">Destacados (&gt;90 pts)</option>
-            <option value="REPROBADO">Reprobados (&lt;51 pts)</option>
-        </select>
-
-        <input type="text" id="searchInput" placeholder="Buscar estudiante..." onkeyup="renderData()">
+    <!-- Controls & Global Filters -->
+    <div class="controls-card">
+        <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="searchInput" placeholder="Buscar por estudiante en todos los cursos..." onkeyup="filterTables()">
+        </div>
+        <div class="filter-buttons">
+            <button class="btn-filter active" onclick="setGlobalFilter('all', this)">Todos</button>
+            <button class="btn-filter" onclick="setGlobalFilter('destacados', this)">Solo Destacados (&ge;90)</button>
+            <button class="btn-filter" onclick="setGlobalFilter('riesgo', this)">En Riesgo / Reprobados (&lt;51)</button>
+        </div>
     </div>
 
-    <div id="coursesContainer"></div>
+    <!-- Course Navigation Tabs -->
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('resumen')">📊 Resumen General & Máximos/Mínimos</button>
+        <button class="tab-btn" onclick="switchTab('p1a')">P1 Altruism</button>
+        <button class="tab-btn" onclick="switchTab('p1b')">P1 Bravery</button>
+        <button class="tab-btn" onclick="switchTab('p1c')">P1 Consistency</button>
+        <button class="tab-btn" onclick="switchTab('p2a')">P2 Accuracy</button>
+        <button class="tab-btn" onclick="switchTab('p2be')">P2 Beauty</button>
+        <button class="tab-btn" onclick="switchTab('p2c')">P2 Clarity</button>
+        <button class="tab-btn" onclick="switchTab('p3ap')">P3 Appreciation</button>
+        <button class="tab-btn" onclick="switchTab('p3ba')">P3 Balance</button>
+        <button class="tab-btn" onclick="switchTab('p3co')">P3 Compassion</button>
+    </div>
+
+    <!-- SECTION: RESUMEN GENERAL Y COMPARATIVO -->
+    <div id="tab-resumen" class="section-block active">
+        <div class="section-header">
+            <h2>Informe Consolidado: Mayores y Menores Puntajes por Curso</h2>
+            <div class="course-stats-summary">
+                <span class="stat-badge">Total Cursos: <span>9</span></span>
+                <span class="stat-badge">Umbral Aprobación: <span>&ge; 51 pts</span></span>
+                <span class="stat-badge">Excelente: <span>&ge; 90 pts</span></span>
+            </div>
+        </div>
+
+        <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 0.95rem;">
+            A continuación se presenta el informe comparativo con el estudiante con mayor puntaje, menor puntaje y promedio general por cada uno de los 9 cursos evaluados.
+        </p>
+
+        <div class="comparison-grid" id="comparison-cards">
+            <!-- Will be generated dynamically -->
+        </div>
+
+        <div style="margin-top: 32px;" id="risk-alert-container">
+            <div class="section-header" style="border-bottom-color: var(--danger-border);">
+                <h3 style="color: #b91c1c;">⚠️ Alerta Pedagógica: Estudiantes Reprobados o en Riesgo (&lt; 51 pts)</h3>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Estudiante</th>
+                            <th>Trim 1</th>
+                            <th>Trim 2</th>
+                            <th>Prom. Final</th>
+                            <th>Detalle del Riesgo / Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="risk-table-body">
+                        <!-- Risk students populated via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- COURSE TABLES (DYNAMICALLY POPULATED TO ENSURE CLEAN HTML) -->
+    <div id="course-containers"></div>
+
+    <footer>
+        Sistema de Consulta de Calificaciones — Colegio Británico © 2026 | Desarrollado para uso académico docente
+    </footer>
 </div>
 
 <script>
-const rawData = [
-    // Primary 1 Altruism
-    { course: "Primary 1 Altruism", name: "ALARCON VILLEGAS KEYLLI MARIETH", t1: 94, t2: 87, prom: 91 },
-    { course: "Primary 1 Altruism", name: "ANCASI BALCAZAR AURORA", t1: 83, t2: 86, prom: 85 },
-    { course: "Primary 1 Altruism", name: "ANZE MERCADO IAN ISRAEL", t1: 78, t2: 60, prom: 69 },
-    { course: "Primary 1 Altruism", name: "ARELLANO MENDIVIL FACUNDO", t1: 87, t2: 86, prom: 87 },
-    { course: "Primary 1 Altruism", name: "BALDIVIEZO ARCE AGUSTINA", t1: 90, t2: 77, prom: 84 },
-    { course: "Primary 1 Altruism", name: "BUHEZO MONTECINOS GUSTAVO CESAR", t1: 72, t2: 99, prom: 86 },
-    { course: "Primary 1 Altruism", name: "CARRILLO FLORES LUCIA ANTONELLA", t1: 98, t2: 91, prom: 95 },
-    { course: "Primary 1 Altruism", name: "CARVAJAL CONTRERAS ANTONELLA ZOE", t1: 88, t2: 91, prom: 90 },
-    { course: "Primary 1 Altruism", name: "CHAMBI CASTILLO IGNACIO GAEL", t1: 84, t2: 90, prom: 87 },
-    { course: "Primary 1 Altruism", name: "COLQUE ALCOBA ZEBADIAS ADIN ALFONSO", t1: 76, t2: 94, prom: 85 },
-    { course: "Primary 1 Altruism", name: "CONDORI MURILLO SARA VALENTINA", t1: 96, t2: 99, prom: 98 },
-    { course: "Primary 1 Altruism", name: "ESQUIVEL SANCHEZ EDGAR VALENTIN", t1: 83, t2: 71, prom: 77 },
-    { course: "Primary 1 Altruism", name: "FERNÁNDEZ ROMERO FACUNDO", t1: 80, t2: 99, prom: 90 },
-    { course: "Primary 1 Altruism", name: "GALLARDO CAZON FIORELLA JAZMIN", t1: 97, t2: 99, prom: 98 },
-    { course: "Primary 1 Altruism", name: "GUTIERREZ OLMEDO TOMAS", t1: 84, t2: 87, prom: 86 },
-    { course: "Primary 1 Altruism", name: "LEZANA PIEROLA ARIANA", t1: 82, t2: 97, prom: 90 },
-    { course: "Primary 1 Altruism", name: "MARTINEZ JUAREZ CLAUDIA ESTEFANIA", t1: 78, t2: 83, prom: 81 },
-    { course: "Primary 1 Altruism", name: "MENDEZ ALMAZAN SOFIA ALEXIA", t1: 87, t2: 91, prom: 89 },
-    { course: "Primary 1 Altruism", name: "MILLARES CORDARA LUNA", t1: 94, t2: 88, prom: 91 },
-    { course: "Primary 1 Altruism", name: "PALACIOS MENDOZA ISABELLA AURORA", t1: 99, t2: 85, prom: 92 },
-    { course: "Primary 1 Altruism", name: "SOLARES QUIROGA SANTIAGO FABIAN", t1: 81, t2: 91, prom: 86 },
-    { course: "Primary 1 Altruism", name: "VALDEZ CORDERO CARLOS JULIAN", t1: 99, t2: 95, prom: 97 },
+// RAW DATASET FROM CENTRALIZADORES
+const dataset = {"Primary 1 Altruism": [["ALARCON VILLEGAS KEYLLI MARIETH", 94, 87, 91, "APROBADO"], ["ANCASI BALCAZAR AURORA", 83, 86, 85, "APROBADO"], ["ANZE MERCADO IAN ISRAEL", 78, 60, 69, "APROBADO"], ["ARELLANO MENDIVIL FACUNDO", 87, 86, 87, "APROBADO"], ["BALDIVIEZO ARCE AGUSTINA", 90, 77, 84, "APROBADO"], ["BUHEZO MONTECINOS GUSTAVO CESAR", 72, 99, 86, "APROBADO"], ["CARRILLO FLORES LUCIA ANTONELLA", 98, 91, 95, "APROBADO"], ["CARVAJAL CONTRERAS ANTONELLA ZOE", 88, 91, 90, "APROBADO"], ["CHAMBI CASTILLO IGNACIO GAEL", 84, 90, 87, "APROBADO"], ["COLQUE ALCOBA ZEBADIAS ADIN ALFONSO", 76, 94, 85, "APROBADO"], ["CONDORI MURILLO SARA VALENTINA", 96, 99, 98, "APROBADO"], ["ESQUIVEL SANCHEZ EDGAR VALENTIN", 83, 71, 77, "APROBADO"], ["FERNÁNDEZ ROMERO FACUNDO", 80, 99, 90, "APROBADO"], ["GALLARDO CAZON FIORELLA JAZMIN", 97, 99, 98, "APROBADO"], ["GUTIERREZ OLMEDO TOMAS", 84, 87, 86, "APROBADO"], ["LEZANA PIEROLA ARIANA", 82, 97, 90, "APROBADO"], ["MARTINEZ JUAREZ CLAUDIA ESTEFANIA", 78, 83, 81, "APROBADO"], ["MENDEZ ALMAZAN SOFIA ALEXIA", 87, 91, 89, "APROBADO"], ["MILLARES CORDARA LUNA", 94, 88, 91, "APROBADO"], ["PALACIOS MENDOZA ISABELLA AURORA", 99, 85, 92, "APROBADO"], ["SOLARES QUIROGA SANTIAGO FABIAN", 81, 91, 86, "APROBADO"], ["VALDEZ CORDERO CARLOS JULIAN", 99, 95, 97, "APROBADO"]], "Primary 1 Bravery": [["ALEMÁN ARROYO NAHIA YASKARA", 96, 94, 95, "APROBADO"], ["ALFARO ROSSO ERIC BENICIO", 83, 80, 82, "APROBADO"], ["ARCE GONZALES MARCELO", 87, 95, 91, "APROBADO"], ["BEJARANO BIANCHI GIANCARLO", 74, 76, 75, "APROBADO"], ["BENITO TORREZ NATALIA ISABELLA", 90, 92, 91, "APROBADO"], ["CARDENAS CASTILLO FREDDY MARTIN", 59, 90, 75, "APROBADO"], ["CASTRO CONDORI ARLET", 83, 65, 74, "APROBADO"], ["CONDORI MARTINEZ LEONOR VALENTINA", 91, 85, 88, "APROBADO"], ["ESPER JULIO SOFIA", 71, 85, 78, "APROBADO"], ["GERONIMO MAMANI MIKAELA DANIELA", 96, 80, 88, "APROBADO"], ["KRAYASICH THOFEHRN RACHEL HAYLEY", 97, 78, 88, "APROBADO"], ["MANSILLA MARTINEZ AGUSTIN", 93, 94, 94, "APROBADO"], ["NUÑEZ SUAREZ HERNAN ANDRES", 92, 92, 92, "APROBADO"], ["PADILLA ORDOÑEZ MEYVI LUCIANA", 95, 98, 97, "APROBADO"], ["PEREZ MICHEL LEONARDO GAEL", 99, 99, 99, "APROBADO"], ["RIERA RIVAS LUNA", 90, 89, 90, "APROBADO"], ["RUIZ ARELLANO SEBASTIÁN", 73, 92, 83, "APROBADO"], ["VICENTE VEDIA ANTONELLA", 99, 98, 99, "APROBADO"], ["ZUÑIGA JURADO RAFAELA", 95, 99, 97, "APROBADO"]], "Primary 1 Consistency": [["ACUÑA OTONDO ISABELLA GUADALUPE", null, 79, 79, "APROBADO"], ["ANTUÑA RAMOS FERNANDO", 87, 90, 89, "APROBADO"], ["ARCE TOLAY MAURO", 94, 96, 95, "APROBADO"], ["ARI MENDIVIL CANDELARIA", 73, 88, 81, "APROBADO"], ["BENITO PATIÑO JUAN LEONARDO", 97, 80, 89, "APROBADO"], ["BERCIANO CUENCA MAYA NAE", 92, 96, 94, "APROBADO"], ["CARDENAS QUINTEROS PAULA BRIANA", 79, 92, 86, "APROBADO"], ["CORINE FERNÁNDEZ EMILIA ISABELLA", 88, 96, 92, "APROBADO"], ["DEL CARPIO AGUIRRE MATILDA", 83, 77, 80, "APROBADO"], ["ESCOBAR YAÑEZ RICARDO GABRIEL", 70, 88, 79, "APROBADO"], ["ESPINDOLA VARGAS GAEL MAXIMILIANO", 46, 51, 49, "REPROBADO"], ["FERNANDEZ DE LOS RIOS LUAN", 94, 98, 96, "APROBADO"], ["GUTIERREZ CASTILLO NAHUEL JOSE", 81, 92, 87, "APROBADO"], ["MANCILLA SILGUERA AITANA MARTINA", 95, 94, 95, "APROBADO"], ["MERCADO GALARZA NICOLAS ENRIQUE", 83, 69, 76, "APROBADO"], ["NEGRON PEÑARANDA DANTE SALVADOR", 93, 79, 86, "APROBADO"], ["RAYA MELEAN NATALIA SOFIA", 76, 95, 86, "APROBADO"], ["RESPILLOSA NARVAEZ GRACIA KATHERINE", 84, 80, 82, "APROBADO"], ["SOLOGUREN FERNANDEZ MARTINA ESTEFANIA", 84, 94, 89, "APROBADO"], ["SORUCO COPA ANA LUCIA", 78, 72, 75, "APROBADO"], ["TAVERA ARROYO LUZ MILETH", 97, 93, 95, "APROBADO"]], "Primary 2 Accuracy": [["AVILA LLANOS SANTIAGO", 61, 83, 72, "APROBADO"], ["BARRERO CHOQUE SOFIA AGUSTINA", 85, 97, 91, "APROBADO"], ["BAYA BEJARANO ALFONSINA", 84, 87, 86, "APROBADO"], ["BLACUD MOSCOSO FERNANDO", 82, 92, 87, "APROBADO"], ["CESPEDES LEON AYLIN VICTORIA", 91, 94, 93, "APROBADO"], ["CRUZ BEJARANO AARON", 81, 93, 87, "APROBADO"], ["FLORES APARICIO FANNY ZEYNEP", 70, 77, 74, "APROBADO"], ["GUARDIA PORTILLO CAMILA", 86, 87, 87, "APROBADO"], ["HUATUCO ARIAS MICAELA ADELEIDE", 86, 93, 90, "APROBADO"], ["ITURRI CORTEZ JOAQUIN", 76, 89, 83, "APROBADO"], ["JALLAZA CUELLAR MIRKA REBECCA", 89, 93, 91, "APROBADO"], ["LAVELLE LEON NATALIA", null, 76, 76, "APROBADO"], ["NIEVA LOPEZ PAOLA", 74, 92, 83, "APROBADO"], ["PACHECO VEGA MAYA", 75, 72, 74, "APROBADO"], ["ROMERO ALARCON MARTINA", 95, 98, 97, "APROBADO"], ["SANABRIA LINARES BARBARA LUCIANA", 82, 93, 88, "APROBADO"], ["SANCHEZ GONZALES BRIANA VALENTINA", 87, 89, 88, "APROBADO"], ["SEGOVIA DARWICH SEBASTIAN", 63, 76, 70, "APROBADO"], ["VARGAS RENTERIA LUCA MATEO", 95, 98, 97, "APROBADO"], ["VARGAS TRUJILLO ALICE MARIANE", 98, 97, 98, "APROBADO"], ["VELASQUEZ ORTIZ THIAGO ADRIAN", 82, 82, 82, "APROBADO"]], "Primary 2 Beauty": [["ALARCON FRONTANILLA ISABELLA VICTORIA", 90, 90, 90, "APROBADO"], ["ANTELO GALLARDO RENAN", 88, 88, 88, "APROBADO"], ["BARBOSA CAMACHO YOUSSEFA MARTINA", 62, 71, 67, "APROBADO"], ["CANEDO KOHLBERG INGRID SOLEMAR", 66, 56, 61, "APROBADO"], ["CERRUTO NARVAEZ OTTAVIO ENRIQUE", 89, 93, 91, "APROBADO"], ["CHUQUIMIA TOLABA ANDREE DAVID", 75, 80, 78, "APROBADO"], ["CONDORI NIEVES FREDDY GAEL", 87, 93, 90, "APROBADO"], ["ESCALANTE ROMERO WILLAM MARTINO", 83, 88, 86, "APROBADO"], ["GALARZA MARINO ANDRE SANTIAGO", 64, 80, 72, "APROBADO"], ["GARCIA MARTINEZ CAMILA BELEN", 83, 93, 88, "APROBADO"], ["JUAREZ MALDONADO ZOE MONTSERRAT", 83, 92, 88, "APROBADO"], ["MARTINEZ ORTEGA SOFIA VALENTINA", 89, 87, 88, "APROBADO"], ["MELAZZINI DEL CARPIO GIULIANNA", 65, 84, 75, "APROBADO"], ["MELGAR BASS WERNER AZUL", 53, 82, 68, "APROBADO"], ["PINTO CONDO VICTOR MOISES", 63, 86, 75, "APROBADO"], ["RUIZ PABON OLIVIA", 71, 91, 81, "APROBADO"], ["SALDIAS FLORES VALENTINA NAOMI", 94, 89, 92, "APROBADO"], ["TRIGO RIQUELME MARTINA ARIADNE", 76, 92, 84, "APROBADO"], ["UGARTE VILLARROEL SAUL", 81, 91, 86, "APROBADO"], ["VARCA VILLARUBIA JULIETA", 79, 91, 85, "APROBADO"], ["VELASQUEZ CORONADO LUCIANO", 58, 83, 71, "APROBADO"]], "Primary 2 Clarity": [[". TEJERINA MATHEO", 62, 75, 69, "APROBADO"], ["ABAN MENDOZA LEONARDO ISAAC", 69, 88, 79, "APROBADO"], ["AGUIRRE BURGOS BRUNO MARTIN", 80, 85, 83, "APROBADO"], ["ANTELO GUTIERREZ ISABEL", 95, 95, 95, "APROBADO"], ["CRUZ REYES FACUNDO VINICIUS", 66, 77, 72, "APROBADO"], ["CUELLAR GOMEZ MATILDA", 88, 93, 91, "APROBADO"], ["EGUEZ FIGUEROA LUCIA", 69, 93, 81, "APROBADO"], ["FLORES APARICIO JOSEFINA ZAHIRA", 74, 80, 77, "APROBADO"], ["GARCIA SOLIZ TIANA MARIE", 74, 93, 84, "APROBADO"], ["GUZMAN DURAN LUANNA NAZARETH", 62, 75, 69, "APROBADO"], ["ISMAILOVA . VIKTORIIA ALEKSANDROVNA", 66, 76, 71, "APROBADO"], ["LEMA AUAD BERNARDO", 63, 67, 65, "APROBADO"], ["NAVARRO VARGAS EUGENIA", 72, 80, 76, "APROBADO"], ["ORTIZ NAVIA ARYA", 74, 77, 76, "APROBADO"], ["RODA LEA PLAZA OLIVIA", 66, 86, 76, "APROBADO"], ["SUAREZ RIVERA ALBA SOFIA", 84, 86, 85, "APROBADO"], ["TERAN CARDENAS IGNACIO", 82, 85, 84, "APROBADO"], ["TETARD ARCE BENÍTEZ SANTIAGO", 62, 67, 65, "APROBADO"], ["TORRELIO AGUADO HUGO MAEL", 71, 60, 66, "APROBADO"], ["VARGAS CORTEZ ELISA", 72, 93, 83, "APROBADO"], ["VARGAS GOMEZ LAUTARO FRANCISCO", 65, 88, 77, "APROBADO"], ["ZERDA ROMERO JOAQUIN", 84, 95, 90, "APROBADO"]], "Primary 3 Appreciation": [[". LIN YICHEN", 60, 70, 65, "APROBADO"], ["ALFARO MIRANDA MAXIMILIANO", 45, 72, 59, "APROBADO"], ["ALIAGA BALDIVIEZO RAFAEL", 93, 97, 95, "APROBADO"], ["ARELLANO RAÑA NICOLAS", 83, 97, 90, "APROBADO"], ["AVILA DE LOS RIOS CONSTANZA", 79, 94, 87, "APROBADO"], ["BRESS ROCHA CHRISTIAN JOEL", 85, 96, 91, "APROBADO"], ["ESCALANTE CASTILLO EDUARDO", 76, 90, 83, "APROBADO"], ["FERNANDEZ ROMERO EMILIANO", 74, 99, 87, "APROBADO"], ["GONZALES APARICIO EMILIANO LEONEL", 53, 69, 61, "APROBADO"], ["GUTIERREZ VIDEZ LIONELA GRACIELL", 81, 76, 79, "APROBADO"], ["LEYTON ARAMAYO MARTIN CARLO", 94, 98, 96, "APROBADO"], ["MURGUIA SANCHEZ DANITZA SOFIA", 94, 99, 97, "APROBADO"], ["NAVIA HUANCA ZAIRA ROCIO", 98, 99, 99, "APROBADO"], ["ORDOÑEZ CAJAL SANTIAGO DONATHO", 81, 99, 90, "APROBADO"], ["PAZ DEL CARPIO MATILDE", 93, 98, 96, "APROBADO"], ["PEÑA ARAMAYO KATRINA SOLEIL", 98, 98, 98, "APROBADO"], ["SERRUDO BUITRAGO ROMINA", 98, 97, 98, "APROBADO"], ["TORO DELGADILLO ARANTXA SOFIA", 84, 80, 82, "APROBADO"], ["TORREZ AGRAMONT RYAN NATIVIDAD", 85, 85, 85, "APROBADO"], ["VACA UZQUEDA JOAQUIN", 86, 96, 91, "APROBADO"], ["YUCRA MUÑOZ RAFAEL", 74, 88, 81, "APROBADO"], ["ZAMBRANA DE SOUZA SKYLER", null, 55, 55, "APROBADO"], ["ZAMORA DEL CASTILLO RAUL GUSTAVO", 84, 93, 89, "APROBADO"]], "Primary 3 Balance": [["ALFARO ROSSO RENATA ANTONELLA", 97, 95, 96, "APROBADO"], ["BUITRAGO SUAREZ ENZO", 67, 80, 74, "APROBADO"], ["CESPEDES LEON ARIANE LIANA", 99, 97, 98, "APROBADO"], ["CORONADO ANTELO TOMAS", 69, 66, 68, "APROBADO"], ["CRESPO JURADO LUCIANO GABRIEL", 97, 97, 97, "APROBADO"], ["CUENCA MORALES ARIANA", 92, 88, 90, "APROBADO"], ["DE LOS RIOS PEÑA RONALD GONZALO", 100, 98, 99, "APROBADO"], ["FIGUEROA RENGEL OCTAVIO", 87, 97, 92, "APROBADO"], ["FORTI FORTI ANNA", 93, 96, 95, "APROBADO"], ["GARAMENDI LOPEZ CESAR TADEO", 92, 90, 91, "APROBADO"], ["GARECA CONDORI SOFIA MAURA", 97, 96, 97, "APROBADO"], ["GUTIERREZ OLMEDO PEDRO", 56, 88, 72, "APROBADO"], ["HUANCA ROMERO AURORA", 88, 86, 87, "APROBADO"], ["ICHAZO REVOLLO CATALINA", 80, 92, 86, "APROBADO"], ["MAGARIÑOS TALAVERA ANTOINETTE", 96, 89, 93, "APROBADO"], ["MARTINEZ LOPEZ PEDRO", 84, 95, 90, "APROBADO"], ["MENDEZ RODRIGUEZ ITALO FACUNDO", 86, 82, 84, "APROBADO"], ["MUGUERTEGUI CASTILLO FABRICIO", 83, 94, 89, "APROBADO"], ["PELÁEZ LLANOS VICTOR", 67, 92, 80, "APROBADO"], ["ROMERO RAMIREZ LIMBANIA", 95, 91, 93, "APROBADO"], ["VARAS MONTEROS TIAGO", 88, 97, 93, "APROBADO"]], "Primary 3 Compassion": [["ALE PAZ NIZA ISABEL", 89, 95, 92, "APROBADO"], ["APARICIO VELASQUEZ ABRAHAM UVALDO", 65, 64, 65, "APROBADO"], ["AVILA GARECA PABLO ALEJANDRO", 86, 98, 92, "APROBADO"], ["BALLON CAMACHO ARIANNA", 77, 79, 78, "APROBADO"], ["BELTRAN SALAZAR ELIAN ANDRE", 94, 96, 95, "APROBADO"], ["BERTRAM BARRENECHEA SOFIA", 75, 85, 80, "APROBADO"], ["CONDORI SOULODRE IAN GUSTAVO", 83, 94, 89, "APROBADO"], ["ESPINOZA FRANCO JUANA GENESIS", 89, 90, 90, "APROBADO"], ["FUENTES CARDOZO JOSE MAXIMILIANO", 84, 77, 81, "APROBADO"], ["GALARZA VACA EMILIO", 44, 46, 45, "REPROBADO"], ["GUTIERREZ CASTRO RENATA LUCIA", 86, 99, 93, "APROBADO"], ["IBAÑEZ MONTELLANO MATEO", 71, 88, 80, "APROBADO"], ["LAHOR MARTINEZ SEBASTIAN LORENZO", 77, 92, 85, "APROBADO"], ["MAMANI BURGOS JHANCARLO", 77, 64, 71, "APROBADO"], ["MARTINEZ MARSILI ALEJANDRO", 81, 98, 90, "APROBADO"], ["MARTINEZ TORREJON VALERY ORIETTA", 94, 90, 92, "APROBADO"], ["NEGRIE VASQUEZ AYRTON", 59, 71, 65, "APROBADO"], ["ORDOÑEZ SANCHEZ SAMANTHA LUANA", 93, 97, 95, "APROBADO"], ["PADILLA BARROSO IKER EITHAN", 88, 94, 91, "APROBADO"], ["PILLCO OVIEDO ALEXA FERNANDA", 94, 82, 88, "APROBADO"], ["VILLCA MAMANI CARLA GISEL", 73, 94, 84, "APROBADO"]]};
 
-    // Primary 1 Bravery
-    { course: "Primary 1 Bravery", name: "ALEMÁN ARROYO NAHIA YASKARA", t1: 96, t2: 94, prom: 95 },
-    { course: "Primary 1 Bravery", name: "ALFARO ROSSO ERIC BENICIO", t1: 83, t2: 80, prom: 82 },
-    { course: "Primary 1 Bravery", name: "ARCE GONZALES MARCELO", t1: 87, t2: 95, prom: 91 },
-    { course: "Primary 1 Bravery", name: "BEJARANO BIANCHI GIANCARLO", t1: 74, t2: 76, prom: 75 },
-    { course: "Primary 1 Bravery", name: "BENITO TORREZ NATALIA ISABELLA", t1: 90, t2: 92, prom: 91 },
-    { course: "Primary 1 Bravery", name: "CARDENAS CASTILLO FREDDY MARTIN", t1: 59, t2: 90, prom: 75 },
-    { course: "Primary 1 Bravery", name: "CASTRO CONDORI ARLET", t1: 83, t2: 65, prom: 74 },
-    { course: "Primary 1 Bravery", name: "CONDORI MARTINEZ LEONOR VALENTINA", t1: 91, t2: 85, prom: 88 },
-    { course: "Primary 1 Bravery", name: "ESPER JULIO SOFIA", t1: 71, t2: 85, prom: 78 },
-    { course: "Primary 1 Bravery", name: "GERONIMO MAMANI MIKAELA DANIELA", t1: 96, t2: 80, prom: 88 },
-    { course: "Primary 1 Bravery", name: "KRAYASICH THOFEHRN RACHEL HAYLEY AMIRA", t1: 97, t2: 78, prom: 88 },
-    { course: "Primary 1 Bravery", name: "MANSILLA MARTINEZ AGUSTIN", t1: 93, t2: 94, prom: 94 },
-    { course: "Primary 1 Bravery", name: "NUÑEZ SUAREZ HERNAN ANDRES", t1: 92, t2: 92, prom: 92 },
-    { course: "Primary 1 Bravery", name: "PADILLA ORDOÑEZ MEYVI LUCIANA", t1: 95, t2: 98, prom: 97 },
-    { course: "Primary 1 Bravery", name: "PEREZ MICHEL LEONARDO GAEL", t1: 99, t2: 99, prom: 99 },
-    { course: "Primary 1 Bravery", name: "RIERA RIVAS LUNA", t1: 90, t2: 89, prom: 90 },
-    { course: "Primary 1 Bravery", name: "RUIZ ARELLANO SEBASTIÁN", t1: 73, t2: 92, prom: 83 },
-    { course: "Primary 1 Bravery", name: "VICENTE VEDIA ANTONELLA", t1: 99, t2: 98, prom: 99 },
-    { course: "Primary 1 Bravery", name: "ZUÑIGA JURADO RAFAELA", t1: 95, t2: 99, prom: 97 },
-
-    // Primary 1 Consistency
-    { course: "Primary 1 Consistency", name: "ACUÑA OTONDO ISABELLA GUADALUPE", t1: null, t2: 79, prom: 79 },
-    { course: "Primary 1 Consistency", name: "ANTUÑA RAMOS FERNANDO", t1: 87, t2: 90, prom: 89 },
-    { course: "Primary 1 Consistency", name: "ARCE TOLAY MAURO", t1: 94, t2: 96, prom: 95 },
-    { course: "Primary 1 Consistency", name: "ARI MENDIVIL CANDELARIA", t1: 73, t2: 88, prom: 81 },
-    { course: "Primary 1 Consistency", name: "BENITO PATIÑO JUAN LEONARDO", t1: 97, t2: 80, prom: 89 },
-    { course: "Primary 1 Consistency", name: "BERCIANO CUENCA MAYA NAE", t1: 92, t2: 96, prom: 94 },
-    { course: "Primary 1 Consistency", name: "CARDENAS QUINTEROS PAULA BRIANA", t1: 79, t2: 92, prom: 86 },
-    { course: "Primary 1 Consistency", name: "CORINE FERNÁNDEZ EMILIA ISABELLA", t1: 88, t2: 96, prom: 92 },
-    { course: "Primary 1 Consistency", name: "DEL CARPIO AGUIRRE MATILDA", t1: 83, t2: 77, prom: 80 },
-    { course: "Primary 1 Consistency", name: "ESCOBAR YAÑEZ RICARDO GABRIEL", t1: 70, t2: 88, prom: 79 },
-    { course: "Primary 1 Consistency", name: "ESPINDOLA VARGAS GAEL MAXIMILIANO", t1: 46, t2: 51, prom: 49 },
-    { course: "Primary 1 Consistency", name: "FERNANDEZ DE LOS RIOS LUAN", t1: 94, t2: 98, prom: 96 },
-    { course: "Primary 1 Consistency", name: "GUTIERREZ CASTILLO NAHUEL JOSE", t1: 81, t2: 92, prom: 87 },
-    { course: "Primary 1 Consistency", name: "MANCILLA SILGUERA AITANA MARTINA", t1: 95, t2: 94, prom: 95 },
-    { course: "Primary 1 Consistency", name: "MERCADO GALARZA NICOLAS ENRIQUE", t1: 83, t2: 69, prom: 76 },
-    { course: "Primary 1 Consistency", name: "NEGRON PEÑARANDA DANTE SALVADOR", t1: 93, t2: 79, prom: 86 },
-    { course: "Primary 1 Consistency", name: "RAYA MELEAN NATALIA SOFIA", t1: 76, t2: 95, prom: 86 },
-    { course: "Primary 1 Consistency", name: "RESPILLOSA NARVAEZ GRACIA KATHERINE", t1: 84, t2: 80, prom: 82 },
-    { course: "Primary 1 Consistency", name: "SOLOGUREN FERNANDEZ MARTINA ESTEFANIA", t1: 84, t2: 94, prom: 89 },
-    { course: "Primary 1 Consistency", name: "SORUCO COPA ANA LUCIA", t1: 78, t2: 72, prom: 75 },
-    { course: "Primary 1 Consistency", name: "TAVERA ARROYO LUZ MILETH", t1: 97, t2: 93, prom: 95 }
+const courseTabs = [
+    { key: "p1a", name: "Primary 1 Altruism de Primary" },
+    { key: "p1b", name: "Primary 1 Bravery de Primary" },
+    { key: "p1c", name: "Primary 1 Consistency de Primary" },
+    { key: "p2a", name: "Primary 2 Accuracy de Primary" },
+    { key: "p2be", name: "Primary 2 Beauty de Primary" },
+    { key: "p2c", name: "Primary 2 Clarity de Primary" },
+    { key: "p3ap", name: "Primary 3 Appreciation de Primary" },
+    { key: "p3ba", name: "Primary 3 Balance de Primary" },
+    { key: "p3co", name: "Primary 3 Compassion de Primary" }
 ];
 
-function calculateTop3(data) {
-    const courses = [...new Set(data.map(d => d.course))];
-    const top3Set = new Set();
+let currentFilter = 'all';
 
-    courses.forEach(c => {
-        const courseStudents = data.filter(d => d.course === c);
-        const sorted = [...courseStudents].sort((a, b) => b.prom - a.prom);
-        // Precedencia de los 3 mayores promedios
-        const topScores = [...new Set(sorted.map(s => s.prom))].slice(0, 3);
-        sorted.forEach(s => {
-            if (topScores.includes(s.prom)) {
-                top3Set.add(s.name + '|' + s.course);
-            }
-        });
-    });
-
-    return top3Set;
+function initReport() {
+    renderResumen();
+    renderCourseTables();
 }
 
-function renderData() {
-    const courseVal = document.getElementById('courseFilter').value;
-    const categoryVal = document.getElementById('categoryFilter').value;
-    const searchVal = document.getElementById('searchInput').value.toLowerCase();
+function renderResumen() {
+    const compGrid = document.getElementById('comparison-cards');
+    const riskBody = document.getElementById('risk-table-body');
+    
+    compGrid.innerHTML = '';
+    riskBody.innerHTML = '';
 
-    const top3Set = calculateTop3(rawData);
-    const container = document.getElementById('coursesContainer');
-    container.innerHTML = '';
+    let riskCount = 0;
 
-    const courses = courseVal === 'ALL' 
-        ? [...new Set(rawData.map(d => d.course))] 
-        : [courseVal];
+    Object.keys(dataset).forEach(courseName => {
+        const students = dataset[courseName];
+        if(!students.length) return;
 
-    courses.forEach(c => {
-        let students = rawData.filter(d => d.course === c);
+        // Calculate max, min, avg
+        let maxStudent = students[0];
+        let minStudent = students[0];
+        let sum = 0;
+        let validCount = 0;
 
-        // Apply Search
-        if (searchVal) {
-            students = students.filter(s => s.name.toLowerCase().includes(searchVal));
-        }
-
-        // Apply Category Filter
-        if (categoryVal === 'TOP3') {
-            students = students.filter(s => top3Set.has(s.name + '|' + s.course));
-        } else if (categoryVal === 'DESTACADO') {
-            students = students.filter(s => s.prom >= 90 || s.t1 >= 90 || s.t2 >= 90);
-        } else if (categoryVal === 'REPROBADO') {
-            students = students.filter(s => s.prom < 51 || (s.t1 !== null && s.t1 < 51) || (s.t2 !== null && s.t2 < 51));
-        }
-
-        if (students.length === 0) return;
-
-        // Sort by Promedio descending
-        students.sort((a, b) => b.prom - a.prom);
-
-        const section = document.createElement('div');
-        section.className = 'course-section';
-
-        let rowsHtml = '';
-        students.forEach((s, idx) => {
-            const isTop3 = top3Set.has(s.name + '|' + s.course);
-            
-            let statusBadge = '';
-            if (s.prom >= 90) {
-                statusBadge = '<span class="badge badge-destacado">Destacado (&gt;90)</span>';
-            } else if (s.prom < 51 || s.t1 < 51 || s.t2 < 51) {
-                statusBadge = '<span class="badge badge-reprobado">En Riesgo / Reprobado (&lt;51)</span>';
-            } else {
-                statusBadge = '<span class="badge badge-regular">Regular</span>';
+        students.forEach(st => {
+            const [name, t1, t2, pf, sit] = st;
+            if(pf !== null) {
+                sum += pf;
+                validCount++;
+                if(pf > maxStudent[3]) maxStudent = st;
+                if(pf < minStudent[3]) minStudent = st;
             }
 
-            const top3Badge = isTop3 ? '<span class="badge badge-top3">Top 3</span>' : '';
+            // Check risk
+            let isRisk = (t1 !== null && t1 < 51) || (t2 !== null && t2 < 51) || (pf !== null && pf < 51) || sit === 'REPROBADO';
+            if(isRisk) {
+                riskCount++;
+                let details = [];
+                if(t1 !== null && t1 < 51) details.push(`Trim 1 (${t1} pts)`);
+                if(t2 !== null && t2 < 51) details.push(`Trim 2 (${t2} pts)`);
+                if(pf !== null && pf < 51) details.push(`Prom. Final (${pf} pts)`);
+                if(sit === 'REPROBADO') details.push('SITUACIÓN: REPROBADO');
+
+                riskBody.innerHTML += `
+                    <tr>
+                        <td><strong>${courseName}</strong></td>
+                        <td><strong>${name}</strong></td>
+                        <td>${t1 !== null ? `<span class="${t1 < 51 ? 'grade-low' : ''}">${t1}</span>` : '-'}</td>
+                        <td>${t2 !== null ? `<span class="${t2 < 51 ? 'grade-low' : ''}">${t2}</span>` : '-'}</td>
+                        <td><span class="grade-number grade-low">${pf}</span></td>
+                        <td><span class="badge badge-reprobado">${details.join(', ')}</span></td>
+                    </tr>
+                `;
+            }
+        });
+
+        const avg = validCount ? (sum / validCount).toFixed(1) : 0;
+
+        compGrid.innerHTML += `
+            <div class="comp-card">
+                <h3>${courseName}</h3>
+                <div class="comp-row">
+                    <span>Promedio Curso:</span>
+                    <span class="student-score" style="color: var(--primary);">${avg} pts</span>
+                </div>
+                <div class="comp-row" style="background: #f0fdf4; padding: 6px 8px; border-radius: 6px; margin: 4px 0;">
+                    <div>
+                        <span style="font-size: 0.75rem; color: #166534; display:block; font-weight:700;">MAXIMO PUNTAJE</span>
+                        <span class="student-name">${maxStudent[0]}</span>
+                    </div>
+                    <span class="student-score grade-high">${maxStudent[3]} pts</span>
+                </div>
+                <div class="comp-row" style="background: #fef2f2; padding: 6px 8px; border-radius: 6px;">
+                    <div>
+                        <span style="font-size: 0.75rem; color: #991b1b; display:block; font-weight:700;">MINIMO PUNTAJE</span>
+                        <span class="student-name">${minStudent[0]}</span>
+                    </div>
+                    <span class="student-score ${minStudent[3] < 51 ? 'grade-low' : ''}" style="color: ${minStudent[3] < 51 ? '#dc2626' : '#1e293b'}">${minStudent[3]} pts</span>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function renderCourseTables() {
+    const container = document.getElementById('course-containers');
+    container.innerHTML = '';
+
+    const courseKeys = Object.keys(dataset);
+    
+    courseTabs.forEach((tab, index) => {
+        const fullCourseName = Object.keys(dataset).find(k => k.toLowerCase().includes(tab.name.toLowerCase().split(' ')[1]) || k.includes(tab.name.split(' ')[1])) || courseKeys[index];
+        const students = dataset[fullCourseName] || [];
+
+        let totalSt = students.length;
+        let sum = 0;
+        let maxPf = 0;
+        let minPf = 100;
+        let reprobados = 0;
+        let destacados = 0;
+
+        students.forEach(st => {
+            const [name, t1, t2, pf, sit] = st;
+            if(pf !== null) {
+                sum += pf;
+                if(pf > maxPf) maxPf = pf;
+                if(pf < minPf) minPf = pf;
+            }
+            if((t1 !== null && t1 < 51) || (t2 !== null && t2 < 51) || (pf !== null && pf < 51) || sit === 'REPROBADO') {
+                reprobados++;
+            }
+            if(pf >= 90) destacados++;
+        });
+
+        const avg = totalSt ? (sum / totalSt).toFixed(1) : 0;
+
+        let rowsHtml = '';
+        students.forEach((st, idx) => {
+            const [name, t1, t2, pf, sit] = st;
+            let isRisk = (t1 !== null && t1 < 51) || (t2 !== null && t2 < 51) || (pf !== null && pf < 51) || sit === 'REPROBADO';
+            let isHigh = pf >= 90;
+
+            let rowClass = '';
+            if(isRisk) rowClass = 'data-risk';
+            else if(isHigh) rowClass = 'data-high';
 
             rowsHtml += `
-                <tr>
+                <tr class="student-row ${rowClass}" data-name="${name.toLowerCase()}" data-risk="${isRisk}" data-high="${isHigh}">
                     <td>${idx + 1}</td>
-                    <td><strong>${s.name}</strong> ${top3Badge}</td>
-                    <td>${s.t1 !== null ? s.t1 : 'N/A'}</td>
-                    <td>${s.t2 !== null ? s.t2 : 'N/A'}</td>
-                    <td><strong>${s.prom}</strong></td>
-                    <td>${statusBadge}</td>
+                    <td><strong>${name}</strong></td>
+                    <td class="grade-number ${t1 !== null && t1 < 51 ? 'grade-low' : (t1 >= 90 ? 'grade-high' : '')}">${t1 !== null ? t1 : '-'}</td>
+                    <td class="grade-number ${t2 !== null && t2 < 51 ? 'grade-low' : (t2 >= 90 ? 'grade-high' : '')}">${t2 !== null ? t2 : '-'}</td>
+                    <td class="grade-number ${pf < 51 ? 'grade-low' : (pf >= 90 ? 'grade-high' : '')}">${pf}</td>
+                    <td>
+                        ${isRisk ? `<span class="badge badge-reprobado">${sit === 'REPROBADO' ? 'REPROBADO' : 'ALERTA <51'}</span>` : 
+                          (isHigh ? `<span class="badge badge-aprobado">DESTACADO</span>` : `<span class="badge badge-aprobado">APROBADO</span>`)}
+                    </td>
                 </tr>
             `;
         });
 
-        section.innerHTML = `
-            <div class="course-header">
-                <h2>${c}</h2>
-                <span style="color: var(--text-secondary); font-size: 0.875rem;">${students.length} Estudiante(s)</span>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 50px;">#</th>
-                        <th>Apellidos y Nombres</th>
-                        <th>Trimestre 1</th>
-                        <th>Trimestre 2</th>
-                        <th>Promedio Acumulado</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rowsHtml}
-                </tbody>
-            </table>
-        `;
+        container.innerHTML += `
+            <div id="tab-${tab.key}" class="section-block">
+                <div class="section-header">
+                    <h2>${fullCourseName}</h2>
+                    <div class="course-stats-summary">
+                        <span class="stat-badge">Alumnos: <span>${totalSt}</span></span>
+                        <span class="stat-badge">Promedio: <span>${avg} pts</span></span>
+                        <span class="stat-badge">Máximo: <span>${maxPf} pts</span></span>
+                        <span class="stat-badge">Mínimo: <span>${minPf} pts</span></span>
+                        <span class="stat-badge">Destacados: <span>${destacados}</span></span>
+                        ${reprobados > 0 ? `<span class="stat-badge" style="background:#fef2f2; color:#991b1b;">Riesgo/Reprobados: <span>${reprobados}</span></span>` : ''}
+                    </div>
+                </div>
 
-        container.appendChild(section);
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Apellidos y Nombres</th>
+                                <th>Trim 1</th>
+                                <th>Trim 2</th>
+                                <th>Prom. Final</th>
+                                <th>Situación Académica</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
     });
 }
 
-// Initial render
-renderData();
+function switchTab(tabKey) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.section-block').forEach(sec => sec.classList.remove('active'));
+
+    const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabKey));
+    if(activeBtn) activeBtn.classList.add('active');
+
+    const targetSec = document.getElementById(`tab-${tabKey}`);
+    if(targetSec) targetSec.classList.add('active');
+}
+
+function setGlobalFilter(filterType, btn) {
+    currentFilter = filterType;
+    document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterTables();
+}
+
+function filterTables() {
+    const searchVal = document.getElementById('searchInput').value.toLowerCase();
+
+    document.querySelectorAll('.student-row').forEach(row => {
+        const name = row.getAttribute('data-name');
+        const isRisk = row.getAttribute('data-risk') === 'true';
+        const isHigh = row.getAttribute('data-high') === 'true';
+
+        let matchesSearch = name.includes(searchVal);
+        let matchesFilter = true;
+
+        if(currentFilter === 'destacados') matchesFilter = isHigh;
+        if(currentFilter === 'riesgo') matchesFilter = isRisk;
+
+        if(matchesSearch && matchesFilter) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+window.onload = initReport;
 </script>
 
 </body>
