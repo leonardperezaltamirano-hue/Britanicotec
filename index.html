@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe Académico - Centralizador de Calificaciones</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent-blue: #2563eb;
+            --success-bg: #dcfce7;
+            --success-text: #15803d;
+            --warning-bg: #fef3c7;
+            --warning-text: #b45309;
+            --danger-bg: #fee2e2;
+            --danger-text: #b91c1c;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            margin: 0 0 0.5rem 0;
+            color: #0f172a;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            padding: 1.25rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .metric-card .number {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        select, input {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--card-bg);
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .course-section {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .course-header {
+            background: #f1f5f9;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #0f172a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #fafafa;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-destacado {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+        }
+
+        .badge-regular {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+        }
+
+        .badge-reprobado {
+            background-color: var(--danger-bg);
+            color: var(--danger-text);
+        }
+
+        .badge-top3 {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Centralizador de Calificaciones — Gestión 2026</h1>
+        <div class="subtitle">Asignatura: TECNOLOGÍA | Profesor: PEREZ ALTAMIRANO LEONAR ALEX</div>
+    </header>
+
+    <div class="summary-cards">
+        <div class="metric-card">
+            <h3>Total Estudiantes</h3>
+            <div class="number" id="stat-total">62</div>
+        </div>
+        <div class="metric-card">
+            <h3>Estudiantes Destacados (&gt;90 pts)</h3>
+            <div class="number" style="color: var(--success-text);" id="stat-destacados">35</div>
+        </div>
+        <div class="metric-card">
+            <h3>En Riesgo / Reprobados (&lt;51 pts)</h3>
+            <div class="number" style="color: var(--danger-text);" id="stat-reprobados">1</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <select id="courseFilter" onchange="renderData()">
+            <option value="ALL">Todos los Cursos</option>
+            <option value="Primary 1 Altruism">Primary 1 Altruism</option>
+            <option value="Primary 1 Bravery">Primary 1 Bravery</option>
+            <option value="Primary 1 Consistency">Primary 1 Consistency</option>
+        </select>
+
+        <select id="categoryFilter" onchange="renderData()">
+            <option value="ALL">Todas las Categorías</option>
+            <option value="TOP3">Mejores Puntajes (Top 3 por Curso)</option>
+            <option value="DESTACADO">Destacados (&gt;90 pts)</option>
+            <option value="REPROBADO">Reprobados (&lt;51 pts)</option>
+        </select>
+
+        <input type="text" id="searchInput" placeholder="Buscar estudiante..." onkeyup="renderData()">
+    </div>
+
+    <div id="coursesContainer"></div>
+</div>
+
+<script>
+const rawData = [
+    // Primary 1 Altruism
+    { course: "Primary 1 Altruism", name: "ALARCON VILLEGAS KEYLLI MARIETH", t1: 94, t2: 87, prom: 91 },
+    { course: "Primary 1 Altruism", name: "ANCASI BALCAZAR AURORA", t1: 83, t2: 86, prom: 85 },
+    { course: "Primary 1 Altruism", name: "ANZE MERCADO IAN ISRAEL", t1: 78, t2: 60, prom: 69 },
+    { course: "Primary 1 Altruism", name: "ARELLANO MENDIVIL FACUNDO", t1: 87, t2: 86, prom: 87 },
+    { course: "Primary 1 Altruism", name: "BALDIVIEZO ARCE AGUSTINA", t1: 90, t2: 77, prom: 84 },
+    { course: "Primary 1 Altruism", name: "BUHEZO MONTECINOS GUSTAVO CESAR", t1: 72, t2: 99, prom: 86 },
+    { course: "Primary 1 Altruism", name: "CARRILLO FLORES LUCIA ANTONELLA", t1: 98, t2: 91, prom: 95 },
+    { course: "Primary 1 Altruism", name: "CARVAJAL CONTRERAS ANTONELLA ZOE", t1: 88, t2: 91, prom: 90 },
+    { course: "Primary 1 Altruism", name: "CHAMBI CASTILLO IGNACIO GAEL", t1: 84, t2: 90, prom: 87 },
+    { course: "Primary 1 Altruism", name: "COLQUE ALCOBA ZEBADIAS ADIN ALFONSO", t1: 76, t2: 94, prom: 85 },
+    { course: "Primary 1 Altruism", name: "CONDORI MURILLO SARA VALENTINA", t1: 96, t2: 99, prom: 98 },
+    { course: "Primary 1 Altruism", name: "ESQUIVEL SANCHEZ EDGAR VALENTIN", t1: 83, t2: 71, prom: 77 },
+    { course: "Primary 1 Altruism", name: "FERNÁNDEZ ROMERO FACUNDO", t1: 80, t2: 99, prom: 90 },
+    { course: "Primary 1 Altruism", name: "GALLARDO CAZON FIORELLA JAZMIN", t1: 97, t2: 99, prom: 98 },
+    { course: "Primary 1 Altruism", name: "GUTIERREZ OLMEDO TOMAS", t1: 84, t2: 87, prom: 86 },
+    { course: "Primary 1 Altruism", name: "LEZANA PIEROLA ARIANA", t1: 82, t2: 97, prom: 90 },
+    { course: "Primary 1 Altruism", name: "MARTINEZ JUAREZ CLAUDIA ESTEFANIA", t1: 78, t2: 83, prom: 81 },
+    { course: "Primary 1 Altruism", name: "MENDEZ ALMAZAN SOFIA ALEXIA", t1: 87, t2: 91, prom: 89 },
+    { course: "Primary 1 Altruism", name: "MILLARES CORDARA LUNA", t1: 94, t2: 88, prom: 91 },
+    { course: "Primary 1 Altruism", name: "PALACIOS MENDOZA ISABELLA AURORA", t1: 99, t2: 85, prom: 92 },
+    { course: "Primary 1 Altruism", name: "SOLARES QUIROGA SANTIAGO FABIAN", t1: 81, t2: 91, prom: 86 },
+    { course: "Primary 1 Altruism", name: "VALDEZ CORDERO CARLOS JULIAN", t1: 99, t2: 95, prom: 97 },
+
+    // Primary 1 Bravery
+    { course: "Primary 1 Bravery", name: "ALEMÁN ARROYO NAHIA YASKARA", t1: 96, t2: 94, prom: 95 },
+    { course: "Primary 1 Bravery", name: "ALFARO ROSSO ERIC BENICIO", t1: 83, t2: 80, prom: 82 },
+    { course: "Primary 1 Bravery", name: "ARCE GONZALES MARCELO", t1: 87, t2: 95, prom: 91 },
+    { course: "Primary 1 Bravery", name: "BEJARANO BIANCHI GIANCARLO", t1: 74, t2: 76, prom: 75 },
+    { course: "Primary 1 Bravery", name: "BENITO TORREZ NATALIA ISABELLA", t1: 90, t2: 92, prom: 91 },
+    { course: "Primary 1 Bravery", name: "CARDENAS CASTILLO FREDDY MARTIN", t1: 59, t2: 90, prom: 75 },
+    { course: "Primary 1 Bravery", name: "CASTRO CONDORI ARLET", t1: 83, t2: 65, prom: 74 },
+    { course: "Primary 1 Bravery", name: "CONDORI MARTINEZ LEONOR VALENTINA", t1: 91, t2: 85, prom: 88 },
+    { course: "Primary 1 Bravery", name: "ESPER JULIO SOFIA", t1: 71, t2: 85, prom: 78 },
+    { course: "Primary 1 Bravery", name: "GERONIMO MAMANI MIKAELA DANIELA", t1: 96, t2: 80, prom: 88 },
+    { course: "Primary 1 Bravery", name: "KRAYASICH THOFEHRN RACHEL HAYLEY AMIRA", t1: 97, t2: 78, prom: 88 },
+    { course: "Primary 1 Bravery", name: "MANSILLA MARTINEZ AGUSTIN", t1: 93, t2: 94, prom: 94 },
+    { course: "Primary 1 Bravery", name: "NUÑEZ SUAREZ HERNAN ANDRES", t1: 92, t2: 92, prom: 92 },
+    { course: "Primary 1 Bravery", name: "PADILLA ORDOÑEZ MEYVI LUCIANA", t1: 95, t2: 98, prom: 97 },
+    { course: "Primary 1 Bravery", name: "PEREZ MICHEL LEONARDO GAEL", t1: 99, t2: 99, prom: 99 },
+    { course: "Primary 1 Bravery", name: "RIERA RIVAS LUNA", t1: 90, t2: 89, prom: 90 },
+    { course: "Primary 1 Bravery", name: "RUIZ ARELLANO SEBASTIÁN", t1: 73, t2: 92, prom: 83 },
+    { course: "Primary 1 Bravery", name: "VICENTE VEDIA ANTONELLA", t1: 99, t2: 98, prom: 99 },
+    { course: "Primary 1 Bravery", name: "ZUÑIGA JURADO RAFAELA", t1: 95, t2: 99, prom: 97 },
+
+    // Primary 1 Consistency
+    { course: "Primary 1 Consistency", name: "ACUÑA OTONDO ISABELLA GUADALUPE", t1: null, t2: 79, prom: 79 },
+    { course: "Primary 1 Consistency", name: "ANTUÑA RAMOS FERNANDO", t1: 87, t2: 90, prom: 89 },
+    { course: "Primary 1 Consistency", name: "ARCE TOLAY MAURO", t1: 94, t2: 96, prom: 95 },
+    { course: "Primary 1 Consistency", name: "ARI MENDIVIL CANDELARIA", t1: 73, t2: 88, prom: 81 },
+    { course: "Primary 1 Consistency", name: "BENITO PATIÑO JUAN LEONARDO", t1: 97, t2: 80, prom: 89 },
+    { course: "Primary 1 Consistency", name: "BERCIANO CUENCA MAYA NAE", t1: 92, t2: 96, prom: 94 },
+    { course: "Primary 1 Consistency", name: "CARDENAS QUINTEROS PAULA BRIANA", t1: 79, t2: 92, prom: 86 },
+    { course: "Primary 1 Consistency", name: "CORINE FERNÁNDEZ EMILIA ISABELLA", t1: 88, t2: 96, prom: 92 },
+    { course: "Primary 1 Consistency", name: "DEL CARPIO AGUIRRE MATILDA", t1: 83, t2: 77, prom: 80 },
+    { course: "Primary 1 Consistency", name: "ESCOBAR YAÑEZ RICARDO GABRIEL", t1: 70, t2: 88, prom: 79 },
+    { course: "Primary 1 Consistency", name: "ESPINDOLA VARGAS GAEL MAXIMILIANO", t1: 46, t2: 51, prom: 49 },
+    { course: "Primary 1 Consistency", name: "FERNANDEZ DE LOS RIOS LUAN", t1: 94, t2: 98, prom: 96 },
+    { course: "Primary 1 Consistency", name: "GUTIERREZ CASTILLO NAHUEL JOSE", t1: 81, t2: 92, prom: 87 },
+    { course: "Primary 1 Consistency", name: "MANCILLA SILGUERA AITANA MARTINA", t1: 95, t2: 94, prom: 95 },
+    { course: "Primary 1 Consistency", name: "MERCADO GALARZA NICOLAS ENRIQUE", t1: 83, t2: 69, prom: 76 },
+    { course: "Primary 1 Consistency", name: "NEGRON PEÑARANDA DANTE SALVADOR", t1: 93, t2: 79, prom: 86 },
+    { course: "Primary 1 Consistency", name: "RAYA MELEAN NATALIA SOFIA", t1: 76, t2: 95, prom: 86 },
+    { course: "Primary 1 Consistency", name: "RESPILLOSA NARVAEZ GRACIA KATHERINE", t1: 84, t2: 80, prom: 82 },
+    { course: "Primary 1 Consistency", name: "SOLOGUREN FERNANDEZ MARTINA ESTEFANIA", t1: 84, t2: 94, prom: 89 },
+    { course: "Primary 1 Consistency", name: "SORUCO COPA ANA LUCIA", t1: 78, t2: 72, prom: 75 },
+    { course: "Primary 1 Consistency", name: "TAVERA ARROYO LUZ MILETH", t1: 97, t2: 93, prom: 95 }
+];
+
+function calculateTop3(data) {
+    const courses = [...new Set(data.map(d => d.course))];
+    const top3Set = new Set();
+
+    courses.forEach(c => {
+        const courseStudents = data.filter(d => d.course === c);
+        const sorted = [...courseStudents].sort((a, b) => b.prom - a.prom);
+        // Precedencia de los 3 mayores promedios
+        const topScores = [...new Set(sorted.map(s => s.prom))].slice(0, 3);
+        sorted.forEach(s => {
+            if (topScores.includes(s.prom)) {
+                top3Set.add(s.name + '|' + s.course);
+            }
+        });
+    });
+
+    return top3Set;
+}
+
+function renderData() {
+    const courseVal = document.getElementById('courseFilter').value;
+    const categoryVal = document.getElementById('categoryFilter').value;
+    const searchVal = document.getElementById('searchInput').value.toLowerCase();
+
+    const top3Set = calculateTop3(rawData);
+    const container = document.getElementById('coursesContainer');
+    container.innerHTML = '';
+
+    const courses = courseVal === 'ALL' 
+        ? [...new Set(rawData.map(d => d.course))] 
+        : [courseVal];
+
+    courses.forEach(c => {
+        let students = rawData.filter(d => d.course === c);
+
+        // Apply Search
+        if (searchVal) {
+            students = students.filter(s => s.name.toLowerCase().includes(searchVal));
+        }
+
+        // Apply Category Filter
+        if (categoryVal === 'TOP3') {
+            students = students.filter(s => top3Set.has(s.name + '|' + s.course));
+        } else if (categoryVal === 'DESTACADO') {
+            students = students.filter(s => s.prom >= 90 || s.t1 >= 90 || s.t2 >= 90);
+        } else if (categoryVal === 'REPROBADO') {
+            students = students.filter(s => s.prom < 51 || (s.t1 !== null && s.t1 < 51) || (s.t2 !== null && s.t2 < 51));
+        }
+
+        if (students.length === 0) return;
+
+        // Sort by Promedio descending
+        students.sort((a, b) => b.prom - a.prom);
+
+        const section = document.createElement('div');
+        section.className = 'course-section';
+
+        let rowsHtml = '';
+        students.forEach((s, idx) => {
+            const isTop3 = top3Set.has(s.name + '|' + s.course);
+            
+            let statusBadge = '';
+            if (s.prom >= 90) {
+                statusBadge = '<span class="badge badge-destacado">Destacado (&gt;90)</span>';
+            } else if (s.prom < 51 || s.t1 < 51 || s.t2 < 51) {
+                statusBadge = '<span class="badge badge-reprobado">En Riesgo / Reprobado (&lt;51)</span>';
+            } else {
+                statusBadge = '<span class="badge badge-regular">Regular</span>';
+            }
+
+            const top3Badge = isTop3 ? '<span class="badge badge-top3">Top 3</span>' : '';
+
+            rowsHtml += `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td><strong>${s.name}</strong> ${top3Badge}</td>
+                    <td>${s.t1 !== null ? s.t1 : 'N/A'}</td>
+                    <td>${s.t2 !== null ? s.t2 : 'N/A'}</td>
+                    <td><strong>${s.prom}</strong></td>
+                    <td>${statusBadge}</td>
+                </tr>
+            `;
+        });
+
+        section.innerHTML = `
+            <div class="course-header">
+                <h2>${c}</h2>
+                <span style="color: var(--text-secondary); font-size: 0.875rem;">${students.length} Estudiante(s)</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">#</th>
+                        <th>Apellidos y Nombres</th>
+                        <th>Trimestre 1</th>
+                        <th>Trimestre 2</th>
+                        <th>Promedio Acumulado</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rowsHtml}
+                </tbody>
+            </table>
+        `;
+
+        container.appendChild(section);
+    });
+}
+
+// Initial render
+renderData();
+</script>
+
+</body>
+</html>
